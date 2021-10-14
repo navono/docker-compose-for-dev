@@ -1,0 +1,45 @@
+version: '3'
+services:
+  gitlab:
+    container_name: "gitlab"
+    image: 'gitlab/gitlab-ce:latest'
+    restart: unless-stopped
+    hostname: 'gitlab.ping.com'
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'http://gitlab.ping.com'
+        #解决 GitLab 响应 Forbidden
+        gitlab_rails['rack_attack_git_basic_auth'] = {'enabled' => true, 'ip_whitelist' => ["0.0.0.0"], 'maxretry' => 300, 'findtime' => 5, 'bantime' => 60}
+        # Add any other gitlab.rb configuration here, each on its own line
+    ports:
+      - '880:80'
+      # - '443:443'
+    volumes:
+    # //映射宿主机的文件目录到运行的镜像里面 保证镜像的重启等不会造成数据的丢失
+      - 'F:\\docker\\data\\gitlab\\config:/etc/gitlab'
+      - 'F:\\docker\\data\\gitlab\\logs:/var/log/gitlab'
+      - 'F:\\docker\\data\\gitlab\\data:/var/opt/gitlab'
+    networks:
+      - gitlab
+
+  gitlab-runner:
+    container_name: "gitlab-runner"
+    image: gitlab/gitlab-runner
+    restart: unless-stopped
+    privileged: true
+    depends_on:
+      - gitlab
+    environment:
+      HTTP_PROXY: 'http://localhost:7890'
+      HTTPS_PROXY: 'http://localhost:7890'
+    volumes:
+      - F:\\docker\\data\\gitlabRunner:/etc/gitlab-runner
+      #宿主机机的docker.sock映射到镜像里面
+      - /var/run/docker.sock:/var/run/docker.sock
+      #宿主机的docker可执行映射到镜像里面 后面build的时候会用到
+      - /usr/bin/docker:/bin/docker
+    networks:
+      - gitlab
+
+networks:
+  gitlab:

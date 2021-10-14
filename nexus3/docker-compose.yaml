@@ -1,0 +1,12 @@
+version: '3'
+services:
+  gitlab:
+    container_name: "nexus3"
+    image: 'sonatype/nexus3:latest'
+    restart: unless-stopped
+    ports:
+      - '8081:8081'
+      - '8082:8082'
+    volumes:
+    # //映射宿主机的文件目录到运行的镜像里面 保证镜像的重启等不会造成数据的丢失
+      - 'F:\\docker\\data\\nexus3:/nexus-data'
