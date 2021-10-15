@@ -22,24 +22,24 @@ services:
     networks:
       - gitlab
 
-  gitlab-runner:
-    container_name: "gitlab-runner"
-    image: gitlab/gitlab-runner
-    restart: unless-stopped
-    privileged: true
-    depends_on:
-      - gitlab
-    environment:
-      HTTP_PROXY: 'http://localhost:7890'
-      HTTPS_PROXY: 'http://localhost:7890'
-    volumes:
-      - F:\\docker\\data\\gitlabRunner:/etc/gitlab-runner
-      #宿主机机的docker.sock映射到镜像里面
-      - /var/run/docker.sock:/var/run/docker.sock
-      #宿主机的docker可执行映射到镜像里面 后面build的时候会用到
-      - /usr/bin/docker:/bin/docker
-    networks:
-      - gitlab
+  # gitlab-runner:
+  #   container_name: "gitlab-runner"
+  #   image: gitlab/gitlab-runner
+  #   restart: unless-stopped
+  #   privileged: true
+  #   depends_on:
+  #     - gitlab
+  #   environment:
+  #     HTTP_PROXY: 'http://localhost:7890'
+  #     HTTPS_PROXY: 'http://localhost:7890'
+  #   volumes:
+  #     - F:\\docker\\data\\gitlabRunner:/etc/gitlab-runner
+  #     #宿主机机的docker.sock映射到镜像里面
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #     #宿主机的docker可执行映射到镜像里面 后面build的时候会用到
+  #     - /usr/bin/docker:/bin/docker
+  #   networks:
+  #     - gitlab
 
 networks:
   gitlab:

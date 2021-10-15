@@ -9,7 +9,7 @@ services:
       HTTP_PASS: "123456"
     ports:
       - '53:53/udp'
-      - '8080:8080'
+      - '8880:8080'
     volumes:
       - 'F:\\docker\\docker-compose\\dns-nginx\\conf\\dns\\dnsmasq.conf:/etc/dnsmasq.conf'
       - 'F:\\docker\\docker-compose\\dns-nginx\\conf\\dns\\dnsmasqhosts:/etc/dnsmasqhosts'
